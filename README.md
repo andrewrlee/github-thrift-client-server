@@ -40,16 +40,16 @@ Running the test server in the repl:
 
 ```clojure
 feeder.client> (feeder.testserve/start)
-"INFO > Sun Feb 22 16:36:56 GMT 2015 > System started"
+INFO > Sun Feb 22 16:36:56 GMT 2015 > System started
 feeder.client> (server-healthy?)
-"INFO > Sun Feb 22 16:36:58 GMT 2015 > Healthy!"
+INFO > Sun Feb 22 16:36:58 GMT 2015 > Healthy!
 feeder.client> (feeder.testserve/stop)
-nil
+INFO > Sun Feb 22 16:37:04 GMT 2015 > server stopping!
 feeder.client> (server-healthy?)
-"INFO > Sun Feb 22 16:37:12 GMT 2015 > Not Healthy!, message: java.net.ConnectException: Connection refused"
+INFO > Sun Feb 22 16:37:12 GMT 2015 > Not Healthy!, message: java.net.ConnectException: Connection refused
 feeder.client> (feeder.testserve/start)
-"INFO > Sun Feb 22 16:38:14 GMT 2015 > System started"
-feeder.client> (count  (:pushes @feeder.testserve/push-db))
+INFO > Sun Feb 22 16:38:14 GMT 2015 > System started
+feeder.client> (feeder.testserve/get-stored-events-size)
 0
 feeder.client> (post-recent-push-events)
 requesting: https://api.github.com/events
@@ -63,8 +63,7 @@ requesting: https://api.github.com/events?page=8
 requesting: https://api.github.com/events?page=9
 requesting: https://api.github.com/events?page=10
 finished pushing batch
-
-feeder.client> (count  (:pushes @feeder.testserve/push-db))
+feeder.client> (feeder.testserve/get-stored-events-size)
 159
 ```
 ##TODO

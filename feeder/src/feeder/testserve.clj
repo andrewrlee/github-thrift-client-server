@@ -45,6 +45,8 @@
          (thrift/stop! @system)
          (reset! system nil))))
 
+(defn get-stored-events-size [] (count (:pushes @push-db)))
+
 (defn -main
   "starts the server"
   [& args] (start))

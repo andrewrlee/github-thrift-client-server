@@ -41,4 +41,3 @@
   [] (with-open [c (thrift/connect! PushService (thrift/framed ["localhost" 7009]) :protocol :compact)]
        (doseq [item (events-seq)] (PushService/addPush c item))
        (println "finished pushing batch")))
- 
