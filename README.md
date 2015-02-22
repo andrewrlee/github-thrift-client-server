@@ -17,7 +17,7 @@ First, build the api project:
    * `./configure` ensuring that java support is enabled (depends on java 1.7+ and ant).
    * `make && make install`
 
-2.) Ensure thrift executable is on the path.
+2.) Ensure the `thrift` executable is on the path.
 
 3.) run `lein jar` to generate the class files from thrift definitions.
 
