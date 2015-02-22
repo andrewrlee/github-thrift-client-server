@@ -21,7 +21,7 @@ First, build the api project:
 
 3.) run `lein jar` to generate the class files from thrift definitions.
 
-4.) run `lein install` to install library in local maven repos.
+4.) run `lein install` to install the library in the local maven repo.
 
 This will make the library available to other projects.
 
