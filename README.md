@@ -1,5 +1,39 @@
 # github-thrift-client-server
 
+Consists of 2 projects:
+
+ - api     
+ - feeder
+
+The api project is a library that is shared by the client and server. The feeder application polls "push" events from github and then sends them via thrift to a server. At the moment, there is a test server implementation in feeder/testserve.clj. This server stores the received pushes in memory.  
+
+The feed traversal has been written as a lazy sequence of single events which transparently loads additional pages of events as required. 
+
+## Installation
+
+First, build the api project:
+
+1.) Download [thrift](http://thrift.apache.org/) tarball:
+   * `./configure` ensuring that java support is enabled (depends on java 1.7+ and ant).
+   * `make && make install`
+
+2.) Ensure thrift executable is on the path.
+
+3.) run `lein jar` to generate the class files from thrift definitions.
+
+4.) run `lein install` to install library in local maven repos.
+
+This will make the library available to other projects.
+
+Then get an api token from [github](https://github.com/blog/1509-personal-api-tokens) and an env variable to `~/.lein/profiles.clj`:
+
+```clojure
+{:user
+  {:env { :github-token   "<api-token>"}}}
+```
+
+and then fire up the repl: `lein repl` 
+
 ## Usage
 
 Running the test server in the repl:
@@ -28,12 +62,20 @@ requesting: https://api.github.com/events?page=7
 requesting: https://api.github.com/events?page=8
 requesting: https://api.github.com/events?page=9
 requesting: https://api.github.com/events?page=10
-requesting: nil
 finished pushing batch
-nil
+
 feeder.client> (count  (:pushes @feeder.testserve/push-db))
 159
 ```
+##TODO
+
+* Implement daemon style functionality in the feeder - polling at a set interval.
+* Use logback or some clj logging framework 
+* Proper error handling
+* Make client configurable (host/port)
+* Add server written in a different language.
+* Better namespace names
+* Tests!
 
 ## License
 
