@@ -4,6 +4,7 @@
 
 Running the test server in the repl:
 
+```clojure
 feeder.client> (feeder.testserve/start)
 "INFO > Sun Feb 22 16:36:56 GMT 2015 > System started"
 feeder.client> (server-healthy?)
@@ -32,6 +33,7 @@ finished pushing batch
 nil
 feeder.client> (count  (:pushes @feeder.testserve/push-db))
 159
+```
 
 ## License
 
