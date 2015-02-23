@@ -41,8 +41,8 @@ Launch the server: `java -jar server-0.1.0-SNAPSHOT-standalone.jar`
 
 |Default host and port: ||
 |-----|---------| 
-|HOST |localhost:|
-|PORT |8080     :|
+|HOST |localhost|
+|PORT |8080     |
 
 The location of the server can be overriden:
 
