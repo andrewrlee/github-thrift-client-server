@@ -30,7 +30,7 @@ This will make the library available to other projects.
 
 ### Server
 
-Build the server jar:
+To build the server jar:
 
 ```
 cd server
@@ -39,10 +39,10 @@ lein uberjar
 
 Launch the server: `java -jar server-0.1.0-SNAPSHOT-standalone.jar`
 
-|Defaults host and port: |
+|Default host and port: ||
 |-----|---------| 
-|HOST |localhost|
-|PORT |8080     |
+|HOST |localhost:|
+|PORT |8080     :|
 
 The location of the server can be overriden:
 
