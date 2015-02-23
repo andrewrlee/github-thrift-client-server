@@ -37,56 +37,43 @@ cd server
 lein uberjar
 ```
 
-Launch the server: `HOST=127.0.0.1 PORT=9000 java -jar feeder-0.1.0-SNAPSHOT-standalone.jar`
+Launch the server: `java -jar server-0.1.0-SNAPSHOT-standalone.jar`
 
-If env variables not specified it has the following defaults: 
- 
-|Defaults:      |
+|Defaults host and port: |
 |-----|---------| 
 |HOST |localhost|
 |PORT |8080     |
 
+The location of the server can be overriden:
+
+`HOST=127.0.0.1 PORT=9000 java -jar server-0.1.0-SNAPSHOT-standalone.jar`
+
 ### Client
 
-Then get an api token from [github](https://github.com/blog/1509-personal-api-tokens) and add an env variable to `~/.lein/profiles.clj`:
+To build the client jar 
 
-```clojure
-{:user
-  {:env { :github-token   "<api-token>"}}}
+```
+cd feeder
+lein uberjar
 ```
 
-and then fire up the repl: `lein repl` 
+Get an api token from [github](https://github.com/blog/1509-personal-api-tokens)
+
+To run the feeder: `GITHUB_TOKEN="<TOKEN>" java -jar feeder-0.1.0-SNAPSHOT-standalone.jar`
+
+This will attempt to push the latest events to the server.
+
+The location of the server can be overriden:
+
+`HOST=127.0.0.1 PORT=9000 GITHUB_TOKEN=<TOKEN> java -jar feeder-0.1.0-SNAPSHOT-standalone.jar`
 
 ## Usage
 
-Running the test server in the repl:
-
-```clojure
-feeder.client> (server-healthy?)
-INFO > Sun Feb 22 16:36:58 GMT 2015 > Healthy!
-feeder.client> (server.testserve/get-stored-events-size)
-0
-feeder.client> (post-recent-push-events)
-requesting: https://api.github.com/events
-requesting: https://api.github.com/events?page=2
-requesting: https://api.github.com/events?page=3
-requesting: https://api.github.com/events?page=4
-requesting: https://api.github.com/events?page=5
-requesting: https://api.github.com/events?page=6
-requesting: https://api.github.com/events?page=7
-requesting: https://api.github.com/events?page=8
-requesting: https://api.github.com/events?page=9
-requesting: https://api.github.com/events?page=10
-finished pushing batch
-feeder.client> (server.testserve/get-stored-events-size)
-159
-```
 ##TODO
 
 * Implement daemon style functionality in the feeder - polling at a set interval.
 * Use logback or some clj logging framework 
 * Proper error handling
-* Make client configurable (host/port)
 * Add server written in a different language.
 * Better namespace names
 * Tests!
