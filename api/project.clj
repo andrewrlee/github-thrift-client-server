@@ -12,5 +12,4 @@
   :thriftc {:path          "thrift"      
             :source-paths  ["src/thrift"] 
             :java-gen-opts "bean,hashcode"
-            :force-compile false}   
-  :profiles {:uberjar {:aot :all}})
+            :force-compile false})

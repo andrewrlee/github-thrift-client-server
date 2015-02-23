@@ -1,8 +1,7 @@
-(ns feeder.testserve
+(ns server.testserve
   (:gen-class)
   (:require [thrift-clj.core :as thrift]
-            [feeder.github :as github]
-            [feeder.client :refer [info]]))
+            [environ.core :refer [env]]))
 
 (thrift/import
   (:types    [github.thrift.mongo.core.api Commit]
@@ -10,6 +9,10 @@
   (:services github.thrift.mongo.core.api.PushService))
 
 (defonce push-db (atom {:pushes []}))
+
+(defn info
+  "logs a series of statements"
+  [& args] (println (str "INFO > " (java.util.Date.)  " > "  (apply str args))))
 
 ;Definition of the service. ping returns "pong", addPush stores received pushes in an atom.
 (thrift/defservice push-service
@@ -29,12 +32,14 @@
 
 (defn start 
   "Starts the server and sets running instance"
-  [] (let [srv (thrift/nonblocking-server 
-                 push-service 7009 
-                 :bind "localhost" 
-                 :protocol :compact)]
+  [] (let [port  (Integer. (env :port 8080))
+           host  (env :host "localhost")
+           srv   (thrift/nonblocking-server 
+                   push-service port
+                   :bind        host 
+                   :protocol :compact)]
     (reset! system (thrift/serve! srv))
-    (info "System started")))
+    (info "System started, bind-host:" host ", port:" port )))
 
 (defn stop 
   "Stops the running server and removes running instance"
