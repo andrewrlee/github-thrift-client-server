@@ -69,6 +69,33 @@ The location of the server can be overriden:
 
 ## Usage
 
+In a terminal:
+
+```
+$ java -jar server-0.1.0-SNAPSHOT-standalone.jar 
+INFO > Mon Feb 23 19:26:19 GMT 2015 > System started, bind-host:localhost, port:8080
+```
+
+In another terminal:
+
+```
+$ GITHUB_TOKEN="<GITHUB-API-TOKEN>" java -jar feeder-0.1.0-SNAPSHOT-standalone.jar 
+INFO > Mon Feb 23 19:28:02 GMT 2015 > connecting on ["localhost" 8080]
+INFO > Mon Feb 23 19:28:02 GMT 2015 > Healthy!
+INFO > Mon Feb 23 19:28:02 GMT 2015 > connecting on ["localhost" 8080]
+requesting: https://api.github.com/events
+requesting: https://api.github.com/events?page=2
+requesting: https://api.github.com/events?page=3
+requesting: https://api.github.com/events?page=4
+requesting: https://api.github.com/events?page=5
+requesting: https://api.github.com/events?page=6
+requesting: https://api.github.com/events?page=7
+requesting: https://api.github.com/events?page=8
+requesting: https://api.github.com/events?page=9
+requesting: https://api.github.com/events?page=10
+finished pushing batch
+```
+
 ##TODO
 
 * Implement daemon style functionality in the feeder - polling at a set interval.
