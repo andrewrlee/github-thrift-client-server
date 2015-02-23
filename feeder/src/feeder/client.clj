@@ -1,7 +1,8 @@
 (ns feeder.client
   (:gen-class)
   (:require [thrift-clj.core :as thrift]
-            [feeder.github :as github]))
+            [feeder.github :as github]
+            [environ.core :refer [env]]))
 
 (thrift/import
   (:types   [github.thrift.mongo.core.api Commit]
@@ -28,17 +29,22 @@
   "Maps the event-seq (which transparantly pages the event feed) to a seq of thrift objects"
   [] (map clj->thrift (github/push-events)))
 
+(defn- connect [] 
+  (let [host-port [ (env :host "localhost")  (env :port 8080)]]
+    (info "connecting on " host-port)
+    (thrift/connect! PushService (thrift/framed host-port :protocol :compact))))
+
 (defn server-healthy? 
   "Pings the server and returns \"Healthy!\" if healthy or \"Not Healthy!\" and a message if otherwise"
   [] (try 
-       (with-open [c (thrift/connect! PushService (thrift/framed ["localhost" 7009]) :protocol :compact)]
+       (with-open [c (connect)]
          (let [response (PushService/ping c)]
            (if (= response  "pong!") (info "Healthy!") (info "Not Healthy!, response:" response))))
        (catch Exception e (info "Not Healthy!, message: " (.getMessage e)))))
 
 (defn post-recent-push-events 
   "Post all recent push events to the server. This may include duplicates, if less than 300 events have occurred since last being run"
-  [] (with-open [c (thrift/connect! PushService (thrift/framed ["localhost" 7009]) :protocol :compact)]
+  [] (with-open [c (connect)]
        (doseq [item (events-seq)] (PushService/addPush c item))
        (println "finished pushing batch")))
 

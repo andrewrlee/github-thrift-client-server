@@ -1,4 +1,4 @@
-(defproject feeder "0.1.0-SNAPSHOT"
+(defproject server "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -11,5 +11,4 @@
   :plugins      [[lein-environ "1.0.0"]]
   :main ^:skip-aot server.testserve
   :target-path "target/%s"
-  :profiles {:dev {:env {:port 8180 :host "localhost"}}
-             :uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}})
