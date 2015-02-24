@@ -1,9 +1,9 @@
 #/bin/bash
 
-NAME="thrift-server"
+NAME="thrift-client"
 VERSION="0.1.0"
 LOCATION="/opt/$NAME"
-JAR_NAME="server-0.1.0-SNAPSHOT-standalone.jar"
+JAR_NAME="feeder-0.1.0-SNAPSHOT-standalone.jar"
 DEB_NAME="${NAME}_${VERSION}_amd64.deb"
 
 lein clean && lein uberjar;
