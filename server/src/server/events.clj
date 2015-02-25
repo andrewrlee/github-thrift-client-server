@@ -14,15 +14,17 @@
   "logs a series of statements"
   [& args] (println (str "INFO > " (java.util.Date.)  " > "  (apply str args))))
 
+(defn connect [] (mg/connect {:host (env :app-mongo-host "mongodb") :port (Integer. (env :app-mongo-port 27017))}))
+
 (defn get-total-number-of-events []
-  (let [conn (mg/connect)
+  (let [conn (connect)
         db   (mg/get-db conn db-name)]
     (info "Querying number of events")
     (mc/count db collection)))
 
 ;db.events.find({'commits.message': {$regex: "count"}} )
 (defn get-pushes [query]
-  (let [conn (mg/connect)
+  (let [conn (connect)
         db   (mg/get-db conn db-name)]
     (info "Searching for:" query)
     (map #(from-db-object % true) (mc/find db collection {"commits.message" {$regex query}}))))
