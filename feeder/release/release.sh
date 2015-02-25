@@ -1,6 +1,6 @@
 #/bin/bash
 
-NAME="thrift-client"
+NAME="feeder"
 VERSION="0.1.0"
 JAR_NAME="feeder-0.1.0-SNAPSHOT-standalone.jar"
 

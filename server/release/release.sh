@@ -7,8 +7,8 @@ JAR_NAME="server-0.1.0-SNAPSHOT-standalone.jar"
 DEB_NAME="${NAME}_${VERSION}_amd64.deb"
 SRC_DIR="../target/uberjar/"
 DEST_DIR="../target/dist/"
-DEST_JAR_LOCATION="${DEST_DIR}/opt/${NAME}/"
-DEST_SCRIPT_LOCATION="${DEST_DIR}/etc/service/${NAME}/"
+DEST_JAR_LOCATION="${DEST_DIR}opt/${NAME}/"
+DEST_SCRIPT_LOCATION="${DEST_DIR}etc/service/${NAME}/"
 
 echo "Running lein";
 lein clean && lein uberjar;

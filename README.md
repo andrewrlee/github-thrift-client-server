@@ -102,6 +102,9 @@ finished pushing batch
 * add test client again to check if it still works
 * Use logback or some clj logging framework 
 * Proper error handling
+* Prevent duplicate events from being added to mongo
+* Make env variables more specific to the service
+* Externalize mongo conf
 
 ## License
 

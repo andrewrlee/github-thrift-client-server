@@ -1,8 +1,8 @@
 #/bin/bash
 
-NAME="thrift-client"
+NAME="test-client"
 VERSION="0.1.0"
-JAR_NAME="feeder-0.1.0-SNAPSHOT-standalone.jar"
+JAR_NAME="test-client-0.1.0-SNAPSHOT-standalone.jar"
 
 DEB_NAME="${NAME}_${VERSION}_amd64.deb"
 SRC_DIR="../target/uberjar/"

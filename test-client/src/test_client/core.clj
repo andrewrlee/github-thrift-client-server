@@ -1,19 +1,45 @@
-(ns feeder.core
+(ns test-client.core
   (:gen-class)
-  (:require [monger.core :as mg]
-            [feeder.github :as github]
-            [environ.core :refer [env]]
-            [monger.collection :as mc]
-            [schejulure.core :refer [schedule]])
-  (:import org.bson.types.ObjectId))
+  (:require [thrift-clj.core :as thrift]
+            [environ.core :refer [env]]))
 
-(defn import-events []
-  (let [conn (mg/connect)
-        db  (mg/get-db conn "monger-test")]
-    (github/info "Running import")
-    (doseq [event  (github/push-events)]
-      (mc/insert db "events" (assoc event :_id (ObjectId.))))))
+(thrift/import
+  (:types   [github.thrift.mongo.core.api Commit]
+            [github.thrift.mongo.core.api Push])
+  (:clients github.thrift.mongo.core.api.PushService))
 
-(defn -main [& args]
-  (let [every-minute {:minute (range 0 60 1)}]
-    (schedule every-minute import-events)))
+(defn info 
+  "logs a series of statements"
+  [& args] (println (str "INFO > " (java.util.Date.)  " > "  (apply str args))))
+
+(defn- connect [] 
+  (let [host-port [ (env :host "localhost")  (env :port 8080)]]
+    (info "connecting on " host-port)
+    (thrift/connect! PushService (thrift/framed host-port :protocol :compact))))
+
+(defn get-total-number-of-events
+  [] (try 
+       (with-open [c (connect)]
+         (PushService/getTotalNumberOfPushes c))
+       (catch Exception e (info "Not Healthy!, message: " (.getMessage e)))))
+
+(defn query
+  [term] (try 
+       (with-open [c (connect)]
+         (PushService/getPushes c term))
+       (catch Exception e (info "Not Healthy!, message: " (.getMessage e)))))
+
+(defn server-healthy? 
+  "Pings the server and returns \"Healthy!\" if healthy or \"Not Healthy!\" and a message if otherwise"
+  [] (try 
+       (with-open [c (connect)]
+         (let [response (PushService/ping c)
+               healthy? (= response  "pong!")]
+           (if healthy? (info "Healthy!") (info "Not Healthy!, response:" response))
+           healthy?))
+       (catch Exception e (info "Not Healthy!, message: " (.getMessage e)))))
+
+(defn -main [& args] 
+  (if (server-healthy?)
+    (do  (println "There are " (get-total-number-of-events) " items")
+         (doseq [term args] (println "searching for " term) (clojure.pprint/pprint (query  term))))))

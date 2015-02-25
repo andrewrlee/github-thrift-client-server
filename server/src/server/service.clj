@@ -33,4 +33,4 @@
   
   (getPushes [query]
     (events/info "getPushes called:" query)
-    (map clj->thrift (events/get-pushes query))))
+    (into #{} (map clj->thrift (events/get-pushes query)))))
