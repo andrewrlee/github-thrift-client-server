@@ -13,13 +13,9 @@ struct Push {
   4: set<Commit> commits;
 }
 
-exception PushError {
-  1: string message;
-  2: string sha;
-}
-
 service PushService {
+  i32 getTotalNumberOfPushes();
   string ping();
-  bool addPush(1:Push push) throws (1:PushError pushError);
+  set<Push> getPushes(1:string query);
 } 
 

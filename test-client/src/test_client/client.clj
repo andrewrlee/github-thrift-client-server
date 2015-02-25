@@ -1,7 +1,6 @@
 (ns feeder.client
   (:gen-class)
   (:require [thrift-clj.core :as thrift]
-            [feeder.github :as github]
             [environ.core :refer [env]]))
 
 (thrift/import
@@ -12,22 +11,6 @@
 (defn info 
   "logs a series of statements"
   [& args] (println (str "INFO > " (java.util.Date.)  " > "  (apply str args))))
-
-(defn- commit->thrift 
-  "Converts commit edn hash -> Commit record -> thrift object"
-  [item]
-  (let [convert-commit (comp thrift/->thrift map->Commit)]
-    (update-in item [:commits] (fn [col] (vec (map convert-commit col))))))
-
-;Converts push edn hash -> Push record -> thrift object 
-(def clj->thrift 
-  (comp thrift/->thrift 
-        map->Push 
-        commit->thrift))
-
-(defn- events-seq 
-  "Maps the event-seq (which transparantly pages the event feed) to a seq of thrift objects"
-  [] (map clj->thrift (github/push-events)))
 
 (defn- connect [] 
   (let [host-port [ (env :host "localhost")  (env :port 8080)]]

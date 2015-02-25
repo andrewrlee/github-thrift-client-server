@@ -7,9 +7,13 @@
 (def token (env :github-token))
 (def api-root-url "https://api.github.com/events")
 
+(defn info 
+  "logs a message"
+  [& args] (println (str "INFO > " (java.util.Date.)  " > "  (apply str args))))
+
 (defn- make-request [url]
   (if url 
-    (do (println "requesting:" url)
+    (do (info "requesting:" url)
         (let [response (client/get url {:basic-auth ["x-oauth-basic" token]})]
            {:body (parse-string (:body response) true) :next-link (get-in response [:links :next :href])}))))
 

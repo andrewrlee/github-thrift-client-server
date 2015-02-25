@@ -98,12 +98,10 @@ finished pushing batch
 
 ##TODO
 
-* Implement daemon style functionality in the feeder - polling at a set interval.
+* Update readme
+* add test client again to check if it still works
 * Use logback or some clj logging framework 
 * Proper error handling
-* Add server written in a different language.
-* Better namespace names
-* Tests!
 
 ## License
 
