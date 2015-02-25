@@ -39,14 +39,16 @@ lein uberjar
 
 Launch the server: `java -jar server-0.1.0-SNAPSHOT-standalone.jar`
 
-|Default host and port: ||
-|-----|---------| 
-|HOST |localhost|
-|PORT |8080     |
+|ENV Variables:    | Defaults  |
+|------------------|-----------| 
+| APP-MONGO-HOST   | "mongodb" |
+| APP-MONGO-PORT   | 27017     |
+| APP-SERVER-PORT  | 8080      |
+| APP-BIND-HOST    | "0.0.0.0" |
 
-The location of the server can be overriden:
+These can be overriden:
 
-`HOST=127.0.0.1 PORT=9000 java -jar server-0.1.0-SNAPSHOT-standalone.jar`
+`APP-BIND-HOST=127.0.0.1 APP-SERVER-PORT=9000 java -jar server-0.1.0-SNAPSHOT-standalone.jar`
 
 ### Client
 

@@ -10,6 +10,8 @@ fi
 
 function start {
   sudo docker run --name mongodb_01 -d -p 27017:27017 plasma147/mongodb --noprealloc --smallfiles
+
+  #this container is linked to the mongodb_01 one. This adds lots of env variables and a host entry for "mongodb" -> <mongodb container hostname>
   sudo docker run --name thriftserver_01 -d -p 8080:8080 --link mongodb_01:mongodb plasma147/thriftserver
 }
 
