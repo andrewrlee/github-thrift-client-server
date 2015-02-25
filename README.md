@@ -97,7 +97,7 @@ finished pushing batch
 ```
 
 ##TODO
-
+* Add feeder and client api docker images
 * Update readme
 * add test client again to check if it still works
 * Use logback or some clj logging framework 
