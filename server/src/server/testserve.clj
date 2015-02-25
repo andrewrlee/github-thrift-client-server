@@ -33,7 +33,7 @@
 (defn start 
   "Starts the server and sets running instance"
   [] (let [port  (Integer. (env :port 8080))
-           host  (env :host "localhost")
+           host  (env :host "0.0.0.0")
            srv   (thrift/nonblocking-server 
                    push-service port
                    :bind        host 
