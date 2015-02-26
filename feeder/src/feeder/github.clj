@@ -4,7 +4,7 @@
             [cheshire.core :refer [parse-string]]
             [environ.core :refer [env]]))
 
-(def token (env :github-token))
+(def token (env :app-github-token))
 (def api-root-url "https://api.github.com/events")
 
 (defn info 

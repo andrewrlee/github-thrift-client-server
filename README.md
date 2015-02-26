@@ -37,22 +37,24 @@ cd server
 lein uberjar
 ```
 
-Launch the server: `java -jar server-0.1.0-SNAPSHOT-standalone.jar`
+To run the server: `java -jar server-0.1.0-SNAPSHOT-standalone.jar`
+
+This will launch a server that will respond to thrift requests by querying mongodb.
 
 |ENV Variables:    | Defaults  |
 |------------------|-----------| 
-| APP-MONGO-HOST   | "mongodb" |
-| APP-MONGO-PORT   | 27017     |
-| APP-SERVER-PORT  | 8080      |
-| APP-BIND-HOST    | "0.0.0.0" |
+| APP_MONGO_HOST   | "mongodb" |
+| APP_MONGO_PORT   | 27017     |
+| APP_SERVER_PORT  | 8080      |
+| APP_BIND_HOST    | "0.0.0.0" |
 
 These can be overriden:
 
-`APP-BIND-HOST=127.0.0.1 APP-SERVER-PORT=9000 java -jar server-0.1.0-SNAPSHOT-standalone.jar`
+`APP_BIND_HOST=127.0.0.1 APP_SERVER_PORT=9000 java -jar server-0.1.0-SNAPSHOT-standalone.jar`
 
-### Client
+### Feeder
 
-To build the client jar 
+To build the feeder jar 
 
 ```
 cd feeder
@@ -63,40 +65,18 @@ Get an api token from [github](https://github.com/blog/1509-personal-api-tokens)
 
 To run the feeder: `GITHUB_TOKEN="<TOKEN>" java -jar feeder-0.1.0-SNAPSHOT-standalone.jar`
 
-This will attempt to push the latest events to the server.
+This will attempt to poll for latest events and insert them into mongo.
 
-The location of the server can be overriden:
+|ENV Variables:    | Defaults     |
+|------------------|--------------| 
+| APP_MONGO_HOST   | "mongodb"    |
+| APP_MONGO_PORT   | 27017        |
+| APP_MAX_EVENTS   | 10000        |
+| APP_GITHUB_TOKEN | <no default> |
 
-`HOST=127.0.0.1 PORT=9000 GITHUB_TOKEN=<TOKEN> java -jar feeder-0.1.0-SNAPSHOT-standalone.jar`
+These can be overriden:
 
-## Usage
-
-In a terminal:
-
-```
-$ java -jar server-0.1.0-SNAPSHOT-standalone.jar 
-INFO > Mon Feb 23 19:26:19 GMT 2015 > System started, bind-host:localhost, port:8080
-```
-
-In another terminal:
-
-```
-$ GITHUB_TOKEN="<GITHUB-API-TOKEN>" java -jar feeder-0.1.0-SNAPSHOT-standalone.jar 
-INFO > Mon Feb 23 19:28:02 GMT 2015 > connecting on ["localhost" 8080]
-INFO > Mon Feb 23 19:28:02 GMT 2015 > Healthy!
-INFO > Mon Feb 23 19:28:02 GMT 2015 > connecting on ["localhost" 8080]
-requesting: https://api.github.com/events
-requesting: https://api.github.com/events?page=2
-requesting: https://api.github.com/events?page=3
-requesting: https://api.github.com/events?page=4
-requesting: https://api.github.com/events?page=5
-requesting: https://api.github.com/events?page=6
-requesting: https://api.github.com/events?page=7
-requesting: https://api.github.com/events?page=8
-requesting: https://api.github.com/events?page=9
-requesting: https://api.github.com/events?page=10
-finished pushing batch
-```
+`APP_MONGO_HOST=127.0.0.1 APP_MONGO_PORT=9000 APP_GITHUB_TOKEN=blah-blah-blah java -jar feeder-0.1.0-SNAPSHOT-standalone.jar`
 
 ##TODO
 * Add feeder and client api docker images

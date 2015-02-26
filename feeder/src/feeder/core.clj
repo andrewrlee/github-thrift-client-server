@@ -10,8 +10,10 @@
 (def db-name "push-events")
 (def collection "events")
 
+(defn connect [] (mg/connect {:host (env :app-mongo-host "mongodb") :port (Integer. (env :app-mongo-port 27017))}))
+
 (defn import-events []
-  (let [conn (mg/connect)
+  (let [conn (connect)
         db  (mg/get-db conn db-name)]
     (if (> (env :app-max-events 10000)  (mc/count db collection))
       (do  (github/info "Running import")
