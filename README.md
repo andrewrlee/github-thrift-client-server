@@ -67,16 +67,43 @@ To run the feeder: `GITHUB_TOKEN="<TOKEN>" java -jar feeder-0.1.0-SNAPSHOT-stand
 
 This will attempt to poll for latest events and insert them into mongo.
 
-|ENV Variables:    | Defaults     |
-|------------------|--------------| 
-| APP_MONGO_HOST   | "mongodb"    |
-| APP_MONGO_PORT   | 27017        |
-| APP_MAX_EVENTS   | 10000        |
-| APP_GITHUB_TOKEN | <no default> |
+|ENV Variables:    | Defaults           |
+|------------------|--------------------| 
+| APP_MONGO_HOST   | "mongodb"          |
+| APP_MONGO_PORT   | 27017              |
+| APP_MAX_EVENTS   | 10000              |
+| APP_GITHUB_TOKEN | &lt;no default&gt; |
 
 These can be overriden:
 
 `APP_MONGO_HOST=127.0.0.1 APP_MONGO_PORT=9000 APP_GITHUB_TOKEN=blah-blah-blah java -jar feeder-0.1.0-SNAPSHOT-standalone.jar`
+
+##Run with Docker
+
+This obviously requires docker to be installed. There a 3 containers, 1 for each of the following service:
+ * mongodb
+ * feeder
+ * server 
+
+There is a script added for convenience in `docker/docker.sh`.
+
+As a one of step the images need to be built for each container:
+```
+  cd docker/
+  sudo ./docker.sh build
+```
+
+After the images have been built, containers can be built and started with the following command:
+```  
+GITHUB_TOKEN="${TOKEN}" ./docker.sh start
+```
+
+The containers can safely be stopped and disposed of with the following command:
+```
+./docker.sh stop
+```
+
+It takes a bit of time for mongodb to start up once its container has run, meant the feeder may fail the first time it is scheduled to run.
 
 ##TODO
 * Add feeder and client api docker images
@@ -87,6 +114,7 @@ These can be overriden:
 * Prevent duplicate events from being added to mongo
 * Make env variables more specific to the service
 * Externalize mongo conf
+* Vagrant?
 
 ## License
 
