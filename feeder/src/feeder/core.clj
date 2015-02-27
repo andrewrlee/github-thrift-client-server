@@ -22,5 +22,5 @@
       (github/info "maximum events imported!, no more will be added"))))
 
 (defn -main [& args]
-  (let [every-minute {:minute (range 0 60 5)}]
-    (schedule every-minute import-events)))
+  (let [every-5-minutes {:minute (range 0 60 5)}]
+    (schedule every-5-minutes import-events)))

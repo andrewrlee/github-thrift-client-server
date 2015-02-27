@@ -52,6 +52,8 @@ These can be overriden:
 
 `APP_BIND_HOST=127.0.0.1 APP_SERVER_PORT=9000 java -jar server-0.1.0-SNAPSHOT-standalone.jar`
 
+The .deb can be built by running `release.sh` script in the release directory.
+
 ### Feeder
 
 To build the feeder jar 
@@ -78,6 +80,8 @@ These can be overriden:
 
 `APP_MONGO_HOST=127.0.0.1 APP_MONGO_PORT=9000 APP_GITHUB_TOKEN=blah-blah-blah java -jar feeder-0.1.0-SNAPSHOT-standalone.jar`
 
+The .deb can be built by running `release.sh` script in the release directory.
+
 ##Run with Docker
 
 This obviously requires docker to be installed. There a 3 containers, 1 for each of the following service:
@@ -103,17 +107,14 @@ The containers can safely be stopped and disposed of with the following command:
 ./docker.sh stop
 ```
 
-It takes a bit of time for mongodb to start up once its container has run, meant the feeder may fail the first time it is scheduled to run.
+It takes a bit of time for mongodb to start up once its container has run, meaning the feeder may fail the first time it is scheduled to run.
 
 ##TODO
-* Add feeder and client api docker images
+* Add client api docker images
 * Update readme
-* add test client again to check if it still works
 * Use logback or some clj logging framework 
 * Proper error handling
 * Prevent duplicate events from being added to mongo
-* Make env variables more specific to the service
-* Externalize mongo conf
 * Vagrant?
 
 ## License
