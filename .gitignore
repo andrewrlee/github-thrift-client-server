@@ -10,3 +10,7 @@ pom.xml
 .hgignore
 .hg/
 **/.gitignore
+.metadata
+**/.classpath
+**/.project
+**/.settings/
