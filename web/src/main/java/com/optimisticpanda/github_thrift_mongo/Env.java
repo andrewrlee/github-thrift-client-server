@@ -9,7 +9,7 @@ public class Env {
 	}
 
 	public int serverPort() {
-		return Ints.tryParse(getEnvVariable("APP_SERVER_PORT", "9090"));
+		return Ints.tryParse(getEnvVariable("APP_SERVER_PORT", "8080"));
 	}
 
 	public int pushServicePort() {
