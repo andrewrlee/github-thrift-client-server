@@ -138,6 +138,7 @@ It takes a bit of time for mongodb to start up once its container has run, meani
 * Proper error handling
 * Prevent duplicate events from being added to mongo
 * Vagrant?
+* just use minified resources
 * Add commits to frontend/pagination
 * Add serverside pagination
 
