@@ -1,16 +1,19 @@
 package com.optimisticpanda.github_thrift_mongo;
 
-import static spark.Spark.*;
+import static spark.Spark.get;
+import static spark.SparkBase.port;
+import static spark.SparkBase.*;
 
 public class Main {
 
-	private static int port = Integer.valueOf(
-			System.getenv().getOrDefault("APP_SERVER_PORT", "8080")).intValue();
-
 	public static void main(String[] args) {
-
-		port(port);
-
-		get("/hello", (req, res) -> "Hello World");
+		Env env = new Env();
+		PushServiceClient service = new PushServiceClient(env);
+		
+		staticFileLocation("/public");
+		port(env.serverPort());
+		
+		get("/service/status", (req, res) -> service.getStatus(), JsonResponseTransformer.INSTANCE);
+		get("/service/search/:query", (req, res) -> service.query(req.params(":query")), JsonResponseTransformer.INSTANCE);
 	}
 }
