@@ -19,7 +19,6 @@
     event.original.preventDefault()
     $.getJSON('service/search/' + query)
        .done(function(data) { 
-         ractive.set('term', query)
          ractive.set('results', data); 
        });   
   });
@@ -33,7 +32,7 @@
   function doPoll(){
     $.getJSON('service/status')
       .done(function(status) { updateStatus(status) })
-      .always(function() { setTimeout(doPoll, 5000); });   
+      .always(function() { setTimeout(doPoll, 10000); });   
   }    
   doPoll();    
 }());    
