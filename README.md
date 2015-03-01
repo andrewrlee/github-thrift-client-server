@@ -104,7 +104,7 @@ This will serve the web frontend.
 
 |ENV Variables:    | Defaults           |
 |------------------|--------------------|
-| APP_SERVER_PORT   | "8080"            |
+| APP_SERVER_PORT  | 8080               |
 
 These can be overriden:
 
