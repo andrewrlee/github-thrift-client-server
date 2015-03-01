@@ -112,7 +112,7 @@ These can be overriden:
 
 ##Run with Docker
 
-This requires docker to be installed. There a 4 containers, 1 for each of the following services:
+This requires docker to be already installed. There a 4 containers, 1 for each of the following services:
  * mongodb
  * feeder
  * thrift-server 
