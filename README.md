@@ -1,6 +1,6 @@
 # github-thrift-client-server
 
-This project consists of 4 projects:
+This repo consists of 4 related projects:
  - api     
  - feeder
  - server
