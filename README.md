@@ -106,7 +106,7 @@ This will serve the web frontend.
 |------------------|--------------------|
 | APP_SERVER_PORT  | 8080               |
 
-These can be overriden:
+This can be overriden:
 
 `APP_SERVER_PORT=8222 java -jar web-interface-0.0.1-SNAPSHOT.jar`
 
