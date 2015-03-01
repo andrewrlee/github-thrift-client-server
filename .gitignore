@@ -10,3 +10,5 @@ pom.xml
 .hgignore
 .hg/
 **/.gitignore
+.metadata
+.recommenders
