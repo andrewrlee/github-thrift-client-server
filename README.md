@@ -28,9 +28,9 @@ First, build the api project:
 
 4.) run `lein install` to install the library in the local maven repo.
 
-This will make the library available to other projects.
+This will make the library available to the thrift-server and web-interface.
 
-### Server
+### Thrift Server
 
 To build the server jar:
 
@@ -84,7 +84,7 @@ These can be overriden:
 
 The .deb can be built by running `release.sh` script in the release directory.
 
-### Web Interface jar
+### Web Interface
 
 To build the web jar
 
