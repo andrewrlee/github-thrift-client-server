@@ -17,6 +17,6 @@ public class Env {
 	}
 
 	public String pushServiceHost() {
-		return getEnvVariable("APP_PUSH_SERVICE_HOST", "localhost");
+		return getEnvVariable("APP_PUSH_SERVICE_HOST", "thriftserver");
 	}
 }

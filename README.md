@@ -109,7 +109,12 @@ These can be overriden:
 This obviously requires docker to be installed. There a 3 containers, 1 for each of the following service:
  * mongodb
  * feeder
- * server 
+ * thrift-server 
+ * web-interface
+
+All of the containers are based on the [Ubuntu base image](http://phusion.github.io/baseimage-docker/) provided by phusion.
+There is a basejava8 dockerfile that extends this for running java applications; and the feeder, thrift-server and web-interface dockerfiles all extend this. 
+The application dockerfiles are responsible for installing their associated .deb file from the `dist` branch of this project. The .deb file is responsible for installing the jar and the runit script for actually starting the application when the containers are run.
 
 There is a script added for convenience in `docker/docker.sh`.
 
