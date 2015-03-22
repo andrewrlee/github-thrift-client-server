@@ -1,9 +1,9 @@
 package com.optimisticpanda.github_thrift_mongo;
 
-import static com.optimisticpanda.github_thrift_mongo.SparkMetricUtils.chain;
+import static com.optimisticpanda.github_thrift_mongo.SparkMetricUtils.decorate;
 import static com.optimisticpanda.github_thrift_mongo.SparkMetricUtils.healthchecksResponse;
 import static com.optimisticpanda.github_thrift_mongo.SparkMetricUtils.metricsResponse;
-import static com.optimisticpanda.github_thrift_mongo.SparkMetricUtils.timed;
+import static com.optimisticpanda.github_thrift_mongo.SparkMetricUtils.*;
 import static spark.Spark.get;
 import static spark.SparkBase.port;
 import static spark.SparkBase.staticFileLocation;
@@ -23,30 +23,26 @@ public class Main {
 		Env env = new Env();
 		MetricRegistry metrics = new MetricRegistry();
 		HealthCheckRegistry healthchecks = new HealthCheckRegistry();
-		
+
 		PushServiceClient service = new PushServiceClient(env, metrics);
 		healthchecks.register("client", service.getHealthcheck());
-		
+
 		staticFileLocation("/public");
 		port(env.serverPort());
 
 		get("/service/status", //
-				chain(timed(metrics, "api-status"), //
-						(req, res) -> service.getStatus()), JsonResponseTransformer.INSTANCE);
+				decorate((req, res) -> service.getStatus(),//
+						timed(metrics, "api-status")), JsonResponseTransformer.INSTANCE);
 		get("/service/search/:query", //
-				chain(timed(metrics, "api-search"), //
-						(req, res) -> service.query(req.params(":query"))), JsonResponseTransformer.INSTANCE);
+				decorate((req, res) -> service.query(req.params(":query")), //
+						timed(metrics, "api-search"), logPathParams()), JsonResponseTransformer.INSTANCE);
 
 		get("/admin/metrics", metricsResponse(metrics));
 		get("/admin/health", healthchecksResponse(healthchecks));
-		
+
 		Graphite graphite = new Graphite(new InetSocketAddress(env.graphiteHost(), env.graphitePort()));
-		GraphiteReporter reporter = GraphiteReporter.forRegistry(metrics)
-		                                                  .prefixedWith(env.graphitePrefix())
-		                                                  .convertRatesTo(TimeUnit.SECONDS)
-		                                                  .convertDurationsTo(TimeUnit.MILLISECONDS)
-		                                                  .filter(MetricFilter.ALL)
-		                                                  .build(graphite);
+		GraphiteReporter reporter = GraphiteReporter.forRegistry(metrics).prefixedWith(env.graphitePrefix()).convertRatesTo(TimeUnit.SECONDS)
+				.convertDurationsTo(TimeUnit.MILLISECONDS).filter(MetricFilter.ALL).build(graphite);
 		reporter.start(1, TimeUnit.MINUTES);
 	}
 
