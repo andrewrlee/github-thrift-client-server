@@ -17,6 +17,9 @@ import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.health.HealthCheck;
 import com.google.common.base.Throwables;
 
 public class PushServiceClient {
@@ -24,8 +27,10 @@ public class PushServiceClient {
 	private static Logger log = LoggerFactory.getLogger(PushServiceClient.class);
 	private String pushServiceHost;
 	private int pushServicePort;
+	private Counter errorCount;
 
-	public PushServiceClient(Env env) {
+	public PushServiceClient(Env env, MetricRegistry metrics) {
+		this.errorCount = metrics.counter("api-error-count");
 		this.pushServiceHost = env.pushServiceHost();
 		this.pushServicePort = env.pushServicePort();
 	}
@@ -39,6 +44,7 @@ public class PushServiceClient {
 			return Optional.of(call.apply(client));
 		} catch (TException e) {
 			log.error("Problem connecting to service", e);
+			errorCount.inc();
 			return Optional.empty();
 		} finally {
 			if (transport.isOpen()) {
@@ -79,10 +85,19 @@ public class PushServiceClient {
 		}).orElse(Boolean.FALSE);
 	}
 
-	public Status getStatus(){
-		return new Status(getTotalNumberOfPushes(), isHealthy());
+	public HealthCheck getHealthcheck() {
+		return new HealthCheck () {
+			@Override
+			protected Result check() throws Exception {
+				return isHealthy() ? Result.healthy() : Result.unhealthy("Problem connecting to server!");
+			}
+		};
 	}
 	
+	public Status getStatus() {
+		return new Status(getTotalNumberOfPushes(), isHealthy());
+	}
+
 	public static class Status {
 		private int eventCount;
 		private boolean healthy;
@@ -91,6 +106,7 @@ public class PushServiceClient {
 			this.eventCount = eventCount;
 			this.healthy = healthy;
 		}
+
 		@Override
 		public String toString() {
 			return "Status [eventCount=" + eventCount + ", healthy=" + healthy + "]";

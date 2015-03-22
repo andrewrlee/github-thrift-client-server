@@ -1,5 +1,7 @@
 package com.optimisticpanda.github_thrift_mongo;
 
+import java.util.UUID;
+
 import com.google.common.primitives.Ints;
 
 public class Env {
@@ -18,5 +20,17 @@ public class Env {
 
 	public String pushServiceHost() {
 		return getEnvVariable("APP_PUSH_SERVICE_HOST", "thriftserver");
+	}
+	
+	public String graphiteHost() {
+		return getEnvVariable("APP_GRAPHITE_HOST", "graphite");
+	}
+	
+	public int graphitePort() {
+		return Ints.tryParse(getEnvVariable("APP_GRAPHITE_PORT", "2003"));
+	}
+	
+	public String graphitePrefix() {
+		return getEnvVariable("APP_GRAPHITE_PREFIX", getEnvVariable("HOSTNAME", UUID.randomUUID().toString()));
 	}
 }

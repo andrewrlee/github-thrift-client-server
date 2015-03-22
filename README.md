@@ -102,9 +102,14 @@ To run the web-interface: `java -jar web-interface-0.0.1-SNAPSHOT.jar`
 
 This will serve the web frontend.
 
-|ENV Variables:    | Defaults           |
-|------------------|--------------------|
-| APP_SERVER_PORT  | 8080               |
+|ENV Variables:          | Defaults                 |
+|------------------------|--------------------------|
+| APP_SERVER_PORT        | 8080                     |
+| APP_PUSH_SERVICE_PORT  | 8080                     |
+| APP_PUSH_SERVICE_HOST  | thriftserver             |
+| APP_GRAPHITE_HOST      | graphite                 |
+| APP_GRAPHITE_PORT      | 2003                     |
+| APP_GRAPHITE_PREFIX    | ${HOSTNAME} OR RAND UUID |
 
 This can be overriden:
 
@@ -112,13 +117,14 @@ This can be overriden:
 
 ##Run with Docker
 
-This requires docker to be already installed. There a 4 containers, 1 for each of the following services:
+This requires docker to be already installed. There a 5 containers, 1 for each of the following services:
  * mongodb
  * feeder
  * thrift-server 
  * web-interface
+ * graphite (Based on nickstenning's [repo](https://github.com/nickstenning/docker-graphite))
 
-All of the containers are based on the [Ubuntu base image](http://phusion.github.io/baseimage-docker/) provided by phusion.
+The application containers are based on the [Ubuntu base image](http://phusion.github.io/baseimage-docker/) provided by phusion.
 There is a basejava8 dockerfile that extends this for running java applications; the feeder, thrift-server and web-interface dockerfiles all extend this file. 
 The application dockerfiles install the associated .deb file from the `dist` branch of this project. The .deb files are responsible for installing the jar and it's startup script (which will be run once the container is started).
 
